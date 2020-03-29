@@ -108,14 +108,14 @@ class RecusiveDevision:
             elif not xp1-1 <= x1:
                 xp1 = xp1-1
             else:
-                xp1 = x1
+                xp1 = xr-1
         if not xp2%2==1:
             if not xp2+1 >= x2:
                 xp2 = xp2+1
             elif not xp2-1 <= xr:
                 xp2 = xp2-1
             else:
-                xp2 = xr
+                xp2 = xr+1
         yp = random.randint(y1+1, y2-1)
         if not yp%2==1:
             if not yp+1 >= y2:
@@ -123,7 +123,7 @@ class RecusiveDevision:
             elif not yp-1 <= y1:
                 yp = yp-1
             else:
-                yp = yp
+                yp = yp+1
         self.field[xr][yp] = 1
         self.field[xp1][yr] = 1
         self.field[xp2][yr] = 1
