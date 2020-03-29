@@ -31,5 +31,11 @@ class Board:
             for j in range(self.r_c):
                 self.field[i].append(0)
 
+    def color(self, coordinate_list):
+        #draw coordinates in color
+        rndfont = 25
+        for i, j in coordinate_list:
+            self.platform.create_rectangle(i*self.width, j*self.width, (i+1)*self.width, (j+1)*self.width, fill="yellow") 
+
     def start(self):
         self.window.mainloop()

@@ -68,55 +68,78 @@ class RecusiveDevision:
         self.field = field
 
     def recusive_step(self, x1, x2, y1, y2):
-        #recursive stop
-        if x1 >= x2 or y1 >= y2:
+
+        if x1+2 > x2 or y1+2 > y2:
             return
 
-        xr = random.randint(x1, x2)
-        yr = random.randint(y1, y2)
-
-        #not in a corner
-        i = 0
-        while (xr == x1 or xr == x2) and (yr == y1 or yr == y2) and i < 10:
-            xr = random.randint(x1, x2)
-            yr = random.randint(y1, y2)
-            i += 1 
-
-        #not on a wall
-        if xr == x1 or xr == x2:
-           h = 0
-        elif yr == y1 or yr == y2:
-            h = 1
-        else:
-            h = random.random()
-
-        #add wall
-        if h < 0.5:
-            #horizontal
-            for i in range(x1, x2+1):
-                self.field[i][yr] = 0
-            #add passage
-            self.field[xr][yr] = 1
-            #recursive
-            self.recusive_step(x1, x2, y1, yr-1)
-            self.recusive_step(x1, x2, yr+1, y2) 
-        else:
-            #vertical
-            for i in range(y1, y2+1):
-                self.field[xr][i] = 0
-            #add passage
-            self.field[xr][yr] = 1
-            #recursive
-            self.recusive_step(x1, xr-1, y1, y2)
-            self.recusive_step(xr+1, x2, y1, y2)     
+        #divide by two walls (even)
+        xr = random.randint(x1+1, x2-1)
+        yr = random.randint(y1+1, y2-1)
+        if not xr%2==0:
+            if not xr+1 >= x2:
+                xr = xr+1
+            elif not xr-1 <= x1:
+                xr = xr-1
+            else:
+                return #TODO
+        if not yr%2==0:
+            if not yr+1 >= y2:
+                yr = yr+1
+            elif not yr-1 <= y1:
+                yr = yr-1
+            else:
+                return #TODO
+        for i in range(y1, y2+1):
+            self.field[xr][i] = 0
+        for j in range(x1, x2+1):
+            self.field[j][yr] = 0
+        #holes in wall (odd)
+        try:
+            xp1 = random.randint(x1+1, xr-1)
+        except:
+            xp1 = x1+1
+        try:
+            xp2 = random.randint(xr+1, x2-1)
+        except:
+            xp2 = xr+1
+        if not xp1%2==1:
+            if not xp1+1 >= xr:
+                xp1 = xp1+1
+            elif not xp1-1 <= x1:
+                xp1 = xp1-1
+            else:
+                xp1 = x1
+        if not xp2%2==1:
+            if not xp2+1 >= x2:
+                xp2 = xp2+1
+            elif not xp2-1 <= xr:
+                xp2 = xp2-1
+            else:
+                xp2 = xr
+        yp = random.randint(y1+1, y2-1)
+        if not yp%2==1:
+            if not yp+1 >= y2:
+                yp = yp+1
+            elif not yp-1 <= y1:
+                yp = yp-1
+            else:
+                yp = yp
+        self.field[xr][yp] = 1
+        self.field[xp1][yr] = 1
+        self.field[xp2][yr] = 1
+        #recursion
+        self.recusive_step(x1, xr-1, y1, yr-1)
+        self.recusive_step(xr+1, x2, y1, yr-1)
+        self.recusive_step(x1, xr-1, yr+1, y2)
+        self.recusive_step(xr+1, x2, yr+1, y2)
 
     def start_recursive(self):
-        # start with just outside walls
+        #original chamber
         for i in range(len(self.field)):
             for j in range(len(self.field[0])):
                 if i == 0 or i == len(self.field)-1 or j == 0 or j == len(self.field)-1:
                     self.field[i][j] = 0
                 else:
                     self.field[i][j] = 1
-
-        self.recusive_step(1, len(self.field)-2, 1, len(self.field[0])-2)
+        #start recursion
+        self.recusive_step(1, len(self.field)-2, 1, len(self.field)-2)
