@@ -1,9 +1,11 @@
 from copy import deepcopy
+import time
 
 class Backtracking:
 
-    def __init__(self, field, start_x, start_y):
-        self.field = field
+    def __init__(self, board, start_x, start_y):
+        self.board = board
+        self.field = board.field
         self.start_x = start_x
         self.start_y = start_y
 
@@ -11,6 +13,9 @@ class Backtracking:
         return self.recursive_step(self.start_x, self.start_y)
 
     def recursive_step(self, x, y):
+        self.board.color("orange")
+        self.board.platform.update()
+        time.sleep(0.1)
         if self.field[x][y] == 2: #goal
             return True
         elif self.field[x][y] == 1: #not explored
@@ -29,4 +34,3 @@ class Backtracking:
                 if self.recursive_step(x, y-1):
                     return True
             self.field[x][y] = 4
-

@@ -1,9 +1,11 @@
 import random
+import time
 
 class Prim:
 
-    def __init__(self, field):
-        self.field = field
+    def __init__(self, board):
+        self.board = board
+        self.field = board.field
         self.frontier = []
 
     def add_frontier(self, x, y):
@@ -60,12 +62,16 @@ class Prim:
             self.add_frontier(x, y)
             self.field[x][y] = 1
             self.frontier.pop(i)
+            self.board.draw()
+            self.board.platform.update()
+            time.sleep(0.1)
 
 
 class RecusiveDevision:
 
-    def __init__(self, field):
-        self.field = field
+    def __init__(self, board):
+        self.board = board
+        self.field = board.field
 
     def recusive_step(self, x1, x2, y1, y2):
 
@@ -127,6 +133,9 @@ class RecusiveDevision:
         self.field[xr][yp] = 1
         self.field[xp1][yr] = 1
         self.field[xp2][yr] = 1
+        self.board.draw()
+        self.board.platform.update()
+        time.sleep(0.1)
         #recursion
         self.recusive_step(x1, xr-1, y1, yr-1)
         self.recusive_step(xr+1, x2, y1, yr-1)
@@ -141,5 +150,8 @@ class RecusiveDevision:
                     self.field[i][j] = 0
                 else:
                     self.field[i][j] = 1
+        self.board.draw()
+        self.board.platform.update()
+        time.sleep(0.1)
         #start recursion
         self.recusive_step(1, len(self.field)-2, 1, len(self.field)-2)

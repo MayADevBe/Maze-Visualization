@@ -28,7 +28,7 @@ def set_start_goal(event):
 def start_solve(event=None):
     global solved
     if not start == None and not goal == None and generated and solved == None:
-        solve = Backtracking(board.field, start[0], start[1])
+        solve = Backtracking(board, start[0], start[1])
         solved = solve.solve()
         if solved:
             color ="green"
@@ -39,7 +39,7 @@ def start_solve(event=None):
 
 def prim_generation(event=None):
     global generated
-    prim_generation = Prim(board.field)
+    prim_generation = Prim(board)
     prim_generation.prim_generate()
     generated = True
     board.draw()
@@ -47,7 +47,7 @@ def prim_generation(event=None):
 
 def recursive_devision_generation(event=None):
     global generated
-    rec_generation = RecusiveDevision(board.field)
+    rec_generation = RecusiveDevision(board)
     rec_generation.start_recursive()
     generated = True
     board.draw()
@@ -61,6 +61,7 @@ def reset(event=None):
     solved = None
     board.field = []
     board.draw()
+    board.platform.update()
 
 if __name__ == '__main__':
     R_C = 21
