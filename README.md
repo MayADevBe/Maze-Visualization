@@ -1,5 +1,5 @@
 # Maze
- Maze Generation and Solving
+ Maze Generation and Solving Visualisation
 
 * press space to reset
 
